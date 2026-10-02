@@ -40,6 +40,7 @@ def start_matlab(fast_path):
 
     engine = matlab.engine.start_matlab()
     engine.addpath(engine.genpath(str(fast_path)), nargout=0)
+    engine.cd(str(fast_path), nargout=0)
     return engine
 
 
