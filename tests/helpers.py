@@ -26,6 +26,8 @@ from main import FAST_Python_Wrapper
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 IGNORED_OUTPUT_PATHS = {
+    "Aircraft.Settings.Dir.Oper",
+    "Aircraft.Settings.Dir.Size",
     "Aircraft.Settings.Plotting",
 }
 
