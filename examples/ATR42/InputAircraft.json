@@ -16,6 +16,7 @@
     },
     "Aero": {
       "L_D": {
+        "Method": "ConstantLD",
         "Clb": 10,
         "Crs": 12
       },
@@ -25,7 +26,8 @@
     },
     "Weight": {
       "MTOW": 18600,
-      "Fuel": 4500
+      "Fuel": 4500,
+      "MLW": null
     },
     "Propulsion": {
       "PropArch": {
