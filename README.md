@@ -9,6 +9,7 @@ The core wrapper accepts an `input_aircraft` dictionary, a separate `mission` di
 
 ```python
 
+# test.py
 
 from pathlib import Path
 
@@ -27,6 +28,19 @@ input_aircraft = {
         },
         "Performance": {
             "Range": 4630000,
+        },
+        "Aero": {
+            "L_D": {
+                "Method": "ConstantLD",
+                "ClbCF": 1,
+                "CrsCF": 1,
+                "Clb": 13,
+                "Crs": 17,
+                "Des": 13,
+            },
+            "W_S": {
+                "SLS": 739.8499,
+            },
         },
         "Propulsion": {
             "PropArch": {
@@ -63,12 +77,11 @@ mission = {
 result = FAST_Python_Wrapper(input_aircraft, mission, fast_dir)
 
 print("Run success:", result["status"])
-# print(result["log"])
+print(result["log"])
 
 if result["status"] == "Yes":
     MTOW = result["output"]["Specs"]["Weight"]["MTOW"]
     print("MTOW:" + str(MTOW) + " kg")
-
 
 ```
 

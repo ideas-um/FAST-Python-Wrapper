@@ -9,6 +9,7 @@ requires-python = "==3.11.*"
 dependencies = [
     "matlabengine==26.1.12",
     "pytest>=8",
+    "numpy",
 ]
 
 [build-system]
