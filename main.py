@@ -14,7 +14,7 @@ from core.matlab_bridge import (
     start_matlab,
     matlab_to_python,
 )
-from core.json_io import build_json_data, load_json_data
+from core.json_io import build_json_data, normalize_json_data
 
 
 def FAST_Python_Wrapper(input_aircraft, mission, fast_path, simplify_output=False):
@@ -47,8 +47,8 @@ def FAST_Python_Wrapper(input_aircraft, mission, fast_path, simplify_output=Fals
     try:
         try:
             # Convert Python Dictionary to MATLAB struct
-            aircraft_python = prepare_aircraft(load_json_data(input_aircraft))
-            mission_python = extract_mission_profile(load_json_data(mission))
+            aircraft_python = prepare_aircraft(normalize_json_data(input_aircraft))
+            mission_python = extract_mission_profile(normalize_json_data(mission))
             aircraft_matlab = python_to_matlab(aircraft_python)
             mission_matlab = python_to_matlab(mission_python)
         except Exception as error:
@@ -93,7 +93,7 @@ def FAST_Python_Wrapper(input_aircraft, mission, fast_path, simplify_output=Fals
         try:
             # Extract OutputAircraft
             fast_result_json = engine.workspace["fast_result_json"]
-            output = build_json_data(load_json_data(json.loads(fast_result_json)))
+            output = build_json_data(normalize_json_data(json.loads(fast_result_json)))
         except Exception:
             try:
                 fast_result = engine.workspace["fast_result"]

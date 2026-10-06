@@ -9,7 +9,7 @@ import pytest
 from core.aircraft_contract import clean_output_fields
 from core.json_io import (
     JsonValidationError,
-    load_json_data,
+    normalize_json_data,
     read_raw_json_file,
 )
 from core.schema_validation import (
@@ -37,7 +37,7 @@ def fake_engine(evalc, workspace=None, quit=None):
     return engine
 
 
-def test_json_null_values_load_as_fast_nan():
+def test_json_null_values_normalize_as_fast_nan():
     """Convert schema-level null placeholders into FAST NaN inputs."""
 
     data = {
@@ -48,7 +48,7 @@ def test_json_null_values_load_as_fast_nan():
         },
     }
 
-    loaded = load_json_data(data)
+    loaded = normalize_json_data(data)
 
     assert isnan(loaded["Profile"]["ClbRate"][0])
 

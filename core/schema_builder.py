@@ -106,7 +106,8 @@ def build_json_schema_from_value(
     Assumptions:
         FAST arrays can mix finite values with non-finite string markers, so
         item schemas are merged across observed items. The string "NaN" is
-        treated as FAST's numeric unspecified marker, matching load_json_data().
+        treated as FAST's numeric unspecified marker during wrapper input
+        normalization.
     """
 
     if isinstance(value, dict):
