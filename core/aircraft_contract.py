@@ -84,8 +84,6 @@ def prepare_aircraft(aircraft):
     Assumptions:
         The wrapper supports FAST preset architecture labels, plus custom O
         architectures when every architecture field is fixed numeric data.
-        Legacy PropArch companion fields are removed so stale graph architecture
-        data cannot leak into a preset run.
     """
 
     if not isinstance(aircraft, dict):
@@ -98,7 +96,12 @@ def prepare_aircraft(aircraft):
     if propulsion is None:
         return aircraft
 
-    arch_type = _get_prop_arch_type(propulsion)
+    prop_arch = propulsion.get("PropArch")
+
+    if not isinstance(prop_arch, dict):
+        return aircraft
+
+    arch_type = prop_arch.get("Type")
 
     if not isinstance(arch_type, str):
         return aircraft
@@ -113,7 +116,6 @@ def prepare_aircraft(aircraft):
     _prepare_aero_method(aircraft)
     _prepare_geometry_preset(aircraft)
     _prepare_engine_spec(propulsion)
-    _remove_legacy_prop_arch_fields(propulsion)
 
     return aircraft
 
@@ -180,27 +182,6 @@ def _get_propulsion_section(aircraft):
         return propulsion
 
     return None
-
-
-def _get_prop_arch_type(propulsion):
-    """Return the propulsion architecture label from current or legacy shape."""
-
-    prop_arch = propulsion.get("PropArch")
-
-    if isinstance(prop_arch, dict):
-        return prop_arch.get("Type")
-
-    return prop_arch
-
-
-def _require_supported_prop_arch_type(arch_type):
-    """Fail early when the wrapper does not support a PropArch label."""
-
-    if arch_type in PROP_ARCH_TYPES:
-        return
-
-    joined_types = ", ".join(PROP_ARCH_TYPES)
-    raise ValueError(f"PropArch.Type must be one of: {joined_types}.")
 
 
 def _prepare_custom_prop_arch(propulsion):
@@ -389,14 +370,6 @@ def _require_matlab_identifier(value, label):
         return
 
     raise ValueError(f"{label} must be a MATLAB function name.")
-
-
-def _remove_legacy_prop_arch_fields(propulsion):
-    """Drop old PropArch companion fields that FAST no longer needs here."""
-
-    for field_name in list(propulsion):
-        if field_name.startswith("PropArch") and field_name != "PropArch":
-            del propulsion[field_name]
 
 
 def _nested_dict(value, path):

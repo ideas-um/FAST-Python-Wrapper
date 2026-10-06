@@ -36,17 +36,17 @@ result = FAST_Python_Wrapper(input_aircraft, mission, fast_dir)
 ## Requirements
 
 - A local FAST directory
-- Use a virtual environment with a Python version that is compatible with MATLAB Engine on [MATLAB Official Website](https://www.mathworks.com/support/requirements/python-compatibility.html). Edit [`pyproject.toml`](https://github.com/triet228/FAST-Python-Wrapper/blob/main/pyproject.toml) to match the correct python and matlabengine version.
+- Use a virtual environment with a Python version that is compatible with MATLAB Engine on [MATLAB Official Website](https://www.mathworks.com/support/requirements/python-compatibility.html). Edit [`pyproject.toml`](https://github.com/ideas-um/FAST-Python-Wrapper/blob/main/pyproject.toml) to match the correct python and matlabengine version.
 
 > [!WARNING]
-> Please make sure your Python version is compatible with MATLAB Engine and it's reflected in both your virtual environment and [`pyproject.toml`](https://github.com/triet228/FAST-Python-Wrapper/blob/main/pyproject.toml).
+> Please make sure your Python version is compatible with MATLAB Engine and it's reflected in both your virtual environment and [`pyproject.toml`](https://github.com/ideas-um/FAST-Python-Wrapper/blob/main/pyproject.toml).
 
 
 ## Installations
 
-1. Clone this [GitHub repository](https://github.com/triet228/FAST-Python-Wrapper) to your machine.
+1. Clone this [GitHub repository](https://github.com/ideas-um/FAST-Python-Wrapper) to your machine.
 
-2. Confirm Python version is compatible with MATLAB Engine. Edit [`pyproject.toml`](https://github.com/triet228/FAST-Python-Wrapper/blob/main/pyproject.toml) to match the correct python and matlabengine version.
+2. Confirm Python version is compatible with MATLAB Engine. Edit [`pyproject.toml`](https://github.com/ideas-um/FAST-Python-Wrapper/blob/main/pyproject.toml) to match the correct python and matlabengine version.
 > [!WARNING]
 > Please confirm your Python version is compatible with MATLAB Engine on [MATLAB Official Website](https://www.mathworks.com/support/requirements/python-compatibility.html)
 
@@ -63,8 +63,7 @@ python -c "import matlab.engine; print('MATLAB Engine OK')"
 ```
 If this gives error, you will need to debug this before continue. If this prints `MATLAB Engine OK`, the environment is ready.
 > [!WARNING]
-> One bug might be that your Python version is not compatible with MATLAB Engine. Please check on [MATLAB Official Website](https://www.mathworks.com/support/requirements/python-compatibility.html). Edit [`pyproject.toml`](https://github.com/triet228/FAST-Python-Wrapper/blob/main/pyproject.toml) to match the correct python and matlabengine version. Then redo step 4 `pip install -e .` to install dependencies.
+> One bug might be that your Python version is not compatible with MATLAB Engine. Please check on [MATLAB Official Website](https://www.mathworks.com/support/requirements/python-compatibility.html). Edit [`pyproject.toml`](https://github.com/ideas-um/FAST-Python-Wrapper/blob/main/pyproject.toml) to match the correct python and matlabengine version. Then redo step 4 `pip install -e .` to install dependencies.
 
 > [!TIP]
 > Inside MATLAB, you can run `which matlab` to know where MATLAB is installed.
-

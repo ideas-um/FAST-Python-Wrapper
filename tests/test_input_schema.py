@@ -363,7 +363,6 @@ def test_prepare_aircraft_normalizes_fast_preset_prop_arch(arch_type):
                     "PropArch": {
                         "Type": arch_type,
                     },
-                    "PropArchLegacy": "drop",
                 },
             },
         }
@@ -372,7 +371,6 @@ def test_prepare_aircraft_normalizes_fast_preset_prop_arch(arch_type):
     assert prepared["Specs"]["Propulsion"]["PropArch"] == {
         "Type": arch_type.upper(),
     }
-    assert "PropArchLegacy" not in prepared["Specs"]["Propulsion"]
 
 
 def test_input_aircraft_contract_accepts_fixed_numeric_custom_prop_arch():
@@ -500,7 +498,7 @@ def test_input_aircraft_contract_allows_missing_optional_field():
 
     data = read_raw_json_file(DEFAULT_INPUT_DIR / "InputAircraft.json")
     changed = deepcopy(data)
-    del changed["Settings"]["Table"]
+    del changed["Settings"]["Plotting"]
 
     validate_aircraft_json(changed)
 
@@ -571,7 +569,7 @@ def test_mission_contract_rejects_missing_profile():
         validate_mission_json(changed)
 
 
-def test_input_aircraft_contract_rejects_legacy_nan_marker():
+def test_input_aircraft_contract_rejects_nan_string_marker():
     """Reject standalone mission NaN marker strings."""
 
     mission = read_raw_json_file(DEFAULT_INPUT_DIR / "Mission.json")

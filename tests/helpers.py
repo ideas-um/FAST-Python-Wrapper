@@ -72,15 +72,13 @@ def fast_path():
 
 
 @pytest.fixture
-def examples_path(monkeypatch):
+def examples_path():
     """Return the root examples path used by parity tests.
 
     Side effects:
-        Clears FAST_MODELS_PATH so the committed examples are the only fixture
-        source used by these tests.
+        None.
     """
 
-    monkeypatch.delenv("FAST_MODELS_PATH", raising=False)
     return PROJECT_ROOT / "examples"
 
 

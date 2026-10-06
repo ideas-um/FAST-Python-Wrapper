@@ -53,7 +53,7 @@ def test_json_null_values_load_as_fast_nan():
     assert isnan(loaded["Profile"]["ClbRate"][0])
 
 
-def test_schema_rejects_legacy_nan_string_in_mission_profile():
+def test_schema_rejects_nan_string_in_mission_profile():
     """Keep mission profile NaN placeholders as JSON null, not strings."""
 
     data = read_raw_json_file(DEFAULT_MISSION_PATH)

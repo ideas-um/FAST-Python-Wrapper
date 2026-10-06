@@ -71,7 +71,7 @@
                 },
                 "Type": {
                   "type": "string",
-                  "description": "Optional velocity type used by some legacy inputs.",
+                  "description": "Optional velocity type for takeoff and cruise values.",
                   "enum": [
                     "TAS",
                     "EAS",
