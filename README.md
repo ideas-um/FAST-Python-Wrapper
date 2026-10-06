@@ -5,10 +5,11 @@ Python wrapper for running [Future Aircraft Sizing Tool (FAST)](https://github.c
 
 ## Running FAST-Python-Wrapper
 
-After installation, run the smoke test from the repository root:
+After installation, run the smoke tests from the repository root:
 
 ```powershell
 python test.py
+python test_json.py
 ```
 
 The core wrapper accepts an `input_aircraft` dictionary, a separate `mission` dictionary, and the local path to FAST. JSON files in `examples/` are just an interface pattern for loading those dictionaries.
