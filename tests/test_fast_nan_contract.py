@@ -21,8 +21,8 @@ import main as wrapper_module
 from main import FAST_Python_Wrapper
 
 
-DEFAULT_INPUT_PATH = PROJECT_ROOT / "examples" / "CeRAS" / "InputAircraft.json"
-DEFAULT_MISSION_PATH = PROJECT_ROOT / "examples" / "CeRAS" / "Mission.json"
+DEFAULT_INPUT_PATH = PROJECT_ROOT / "examples" / "ATR42" / "InputAircraft.json"
+DEFAULT_MISSION_PATH = PROJECT_ROOT / "examples" / "ATR42" / "Mission.json"
 
 
 def fake_engine(evalc, workspace=None, quit=None):

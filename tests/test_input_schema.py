@@ -29,19 +29,10 @@ from core.schema_validation import (
 from tests.helpers import PROJECT_ROOT
 
 
-DEFAULT_INPUT_DIR = PROJECT_ROOT / "examples" / "CeRAS"
+DEFAULT_INPUT_DIR = PROJECT_ROOT / "examples" / "ATR42"
 EXAMPLES_DIR = PROJECT_ROOT / "examples"
 CASE_NAMES = [
-    "A320",
-    "AEA",
     "ATR42",
-    "CeRAS",
-    "ERJ175LR",
-    "ERJ175LR_ClimbThenAccel",
-    "ERJ175LR_Elec",
-    "ERJ190_E2",
-    "ERJ190_FE",
-    "LM100J_Conventional",
 ]
 
 

@@ -11,7 +11,7 @@ from pathlib import Path
 nan = float("nan")
 
 # Default example case directory and schema file names.
-DEFAULT_INPUT_DIR = Path("examples/CeRAS")
+DEFAULT_INPUT_DIR = Path("examples/ATR42")
 SCHEMA_DIR = Path("schema")
 AIRCRAFT_JSON_PATH = Path("InputAircraft.json")
 MISSION_JSON_PATH = Path("Mission.json")

@@ -89,7 +89,7 @@ def load_example_input(examples_path, case_path):
 
     Inputs:
         examples_path: Root path for examples.
-        case_path: Case directory name, such as A320.
+        case_path: Case directory name, such as ATR42.
 
     Outputs:
         Pair of Python dictionaries accepted by FAST_Python_Wrapper().
