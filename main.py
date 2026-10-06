@@ -1,7 +1,6 @@
 # main.py
 
 from pathlib import Path
-from math import nan
 import json
 
 from core.aircraft_contract import (
@@ -104,7 +103,7 @@ def FAST_Python_Wrapper(input_aircraft, mission, fast_path, simplify_output=Fals
                 output = {}
 
         # Keep default output as close to FAST as possible. Fixture generation
-        # can opt into the older simplified shape.
+        # can opt into the comparison-friendly shape used by saved examples.
         if simplify_output and isinstance(output, dict):
             clean_output_fields(output)
 
@@ -124,172 +123,3 @@ def FAST_Python_Wrapper(input_aircraft, mission, fast_path, simplify_output=Fals
     finally:
         # Quit MATLAB Engine
         engine.quit()
-
-
-if __name__ == "__main__":
-    project_dir = Path(__file__).resolve().parent
-    fast_dir = project_dir.parent / "FAST"
-
-    input_aircraft = {
-        "Specs": {
-            "TLAR": {
-                "EIS": 2005,
-                "Class": "Turbofan",
-                "MaxPax": 218.8828,
-            },
-            "Aero": {
-                "L_D": {
-                    "ClbCF": 1,
-                    "CrsCF": 1,
-                    "Clb": 13,
-                    "Crs": 17,
-                    "Des": 13,
-                },
-                "W_S": {
-                    "SLS": 739.8499,
-                },
-            },
-            "Propulsion": {
-                "MDotCF": 1.2,
-                "PropArch": {
-                    "Type": "C",
-                },
-                "Engine": "CeRAS",
-                "NumEngines": 2,
-                "T_W": {
-                    "SLS": 0.3,
-                },
-                "Eta": {
-                    "Prop": 0.8,
-                },
-            },
-            "Weight": {
-                "WairfCF": 1,
-                "MTOW": 86182.5503,
-                "EM": 0,
-                "Fuel": 9427.9174,
-                "Batt": 0,
-            },
-            "Performance": {
-                "Vels": {
-                    "Tko": 69.45,
-                    "Crs": 0.78,
-                },
-                "Alts": {
-                    "Tko": 0,
-                    "Crs": 10668,
-                },
-                "Range": 4630000,
-                "RCMax": 11.43,
-            },
-            "Power": {
-                "SpecEnergy": {
-                    "Fuel": 12,
-                    "Batt": 0.25,
-                },
-                "Eta": {
-                    "EM": 0.96,
-                    "EG": 0.96,
-                },
-                "P_W": {
-                    "EM": 10,
-                },
-            },
-        },
-        "Settings": {
-            "OEW": {
-                "MaxIter": 50,
-                "Tol": 0.001,
-            },
-            "Analysis": {
-                "MaxIter": 50,
-                "Type": 1,
-            },
-            "Plotting": 0,
-            "Table": 0,
-        },
-    }
-    mission = {
-        "Profile": {
-            "Target": {
-                "Valu": [
-                    1620500,
-                    3009500,
-                ],
-                "Type": [
-                    "Dist",
-                    "Dist",
-                ],
-            },
-            "Segs": [
-                "Climb",
-                "Cruise",
-                "Climb",
-                "Cruise",
-                "Descent",
-            ],
-            "ID": [
-                1,
-                1,
-                2,
-                2,
-                2,
-            ],
-            "AltBeg": [
-                0,
-                10058.4,
-                10058.4,
-                10668,
-                10668,
-            ],
-            "AltEnd": [
-                10058.4,
-                10058.4,
-                10668,
-                10668,
-                0,
-            ],
-            "VelBeg": [
-                0.2,
-                0.78,
-                0.78,
-                0.78,
-                0.78,
-            ],
-            "VelEnd": [
-                0.78,
-                0.78,
-                0.78,
-                0.78,
-                0.2,
-            ],
-            "TypeBeg": [
-                "Mach",
-                "Mach",
-                "Mach",
-                "Mach",
-                "Mach",
-            ],
-            "TypeEnd": [
-                "Mach",
-                "Mach",
-                "Mach",
-                "Mach",
-                "Mach",
-            ],
-            "ClbRate": [
-                nan,
-                nan,
-                nan,
-                nan,
-                nan,
-            ],
-        },
-    }
-
-    result = FAST_Python_Wrapper(input_aircraft, mission, fast_dir)
-
-    print("Run success:" + str(result["status"]))
-    print(result["log"])
-    print("MTOW:" + str(result["output"]["Specs"]["Weight"]["MTOW"]))
-    
