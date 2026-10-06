@@ -9,7 +9,6 @@ from .json_io import (
     DEFAULT_INPUT_DIR,
     JsonValidationError,
     MISSION_JSON_PATH,
-    load_json_data,
     read_raw_json_file,
 )
 from .schema_validation import (
@@ -57,4 +56,4 @@ def load_input_json_files(input_dir=None):
     mission_data = read_raw_json_file(mission_json_path)
     validate_aircraft_json(aircraft_data)
     validate_mission_json(mission_data)
-    return load_json_data(aircraft_data), load_json_data(mission_data)
+    return aircraft_data, mission_data

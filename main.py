@@ -47,8 +47,8 @@ def FAST_Python_Wrapper(input_aircraft, mission, fast_path, simplify_output=Fals
     try:
         try:
             # Convert Python Dictionary to MATLAB struct
-            aircraft_python = prepare_aircraft(input_aircraft)
-            mission_python = extract_mission_profile(mission)
+            aircraft_python = prepare_aircraft(load_json_data(input_aircraft))
+            mission_python = extract_mission_profile(load_json_data(mission))
             aircraft_matlab = python_to_matlab(aircraft_python)
             mission_matlab = python_to_matlab(mission_python)
         except Exception as error:

@@ -28,6 +28,10 @@ By default, `FAST_Python_Wrapper()` returns the full FAST output after convertin
 Core API shape:
 
 ```python
+import json
+
+input_aircraft = json.loads(input_aircraft_path.read_text(encoding="utf-8"))
+mission = json.loads(mission_path.read_text(encoding="utf-8"))
 result = FAST_Python_Wrapper(input_aircraft, mission, fast_dir)
 ```
 

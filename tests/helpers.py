@@ -18,7 +18,6 @@ from pathlib import Path
 from core.json_io import (
     build_json_data,
     is_json_number,
-    load_json_data,
     read_raw_json_file,
 )
 from main import FAST_Python_Wrapper
@@ -101,8 +100,8 @@ def load_example_input(examples_path, case_path):
     aircraft_path = examples_path / case_path / "InputAircraft.json"
     mission_path = examples_path / case_path / "Mission.json"
     return (
-        load_json_data(read_raw_json_file(aircraft_path)),
-        load_json_data(read_raw_json_file(mission_path)),
+        read_raw_json_file(aircraft_path),
+        read_raw_json_file(mission_path),
     )
 
 
