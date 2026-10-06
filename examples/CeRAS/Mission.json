@@ -1,0 +1,77 @@
+{
+  "Profile": {
+    "Target": {
+      "Valu": [
+        1620500.0,
+        3009500.0
+      ],
+      "Type": [
+        "Dist",
+        "Dist"
+      ]
+    },
+    "Segs": [
+      "Climb",
+      "Cruise",
+      "Climb",
+      "Cruise",
+      "Descent"
+    ],
+    "ID": [
+      1,
+      1,
+      2,
+      2,
+      2
+    ],
+    "AltBeg": [
+      0,
+      10058.4,
+      10058.4,
+      10668,
+      10668
+    ],
+    "AltEnd": [
+      10058.4,
+      10058.4,
+      10668,
+      10668,
+      0
+    ],
+    "VelBeg": [
+      0.2,
+      0.78,
+      0.78,
+      0.78,
+      0.78
+    ],
+    "VelEnd": [
+      0.78,
+      0.78,
+      0.78,
+      0.78,
+      0.2
+    ],
+    "TypeBeg": [
+      "Mach",
+      "Mach",
+      "Mach",
+      "Mach",
+      "Mach"
+    ],
+    "TypeEnd": [
+      "Mach",
+      "Mach",
+      "Mach",
+      "Mach",
+      "Mach"
+    ],
+    "ClbRate": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "Specs": {
+    "TLAR": {
+      "EIS": 2005,
+      "Class": "Turbofan",
+      "MaxPax": 78
+    },
+    "Aero": {
+      "L_D": {
+        "ClbCF": 1,
+        "CrsCF": 1,
+        "Method": "ConstantLD",
+        "Clb": 10.9773,
+        "Crs": 15.2,
+        "Des": 10.9773
+      },
+      "W_S": {
+        "SLS": 533.4052192748483
+      },
+      "ScaleCD0": 1,
+      "ScaleCDI": 1,
+      "ScaleSub": 0.8942,
+      "ScaleSup": 1,
+      "ScaleWnd": 1,
+      "Components": {
+        "Cf": [
+          0.0026,
+          0.0026,
+          0.0026,
+          0.0026,
+          0.0026,
+          0.0026
+        ],
+        "Re": [
+          2000000.0,
+          2000000.0,
+          2000000.0,
+          2000000.0,
+          2000000.0,
+          2000000.0
+        ],
+        "Fine": [
+          9.8385,
+          0.12,
+          0.12,
+          0.12,
+          1.6734,
+          1.6734
+        ],
+        "Swet": [
+          301.408,
+          37.3547,
+          35.3073,
+          126.2423,
+          8.4248,
+          8.4248
+        ],
+        "LamFracUpper": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "LamFracLower": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Wing": {
+        "S": 79.8322,
+        "AirfoilTech": 1,
+        "AR": 10.3465,
+        "MaxCamber": 0.02,
+        "t_c": 0.12,
+        "e": 0.85,
+        "Sweep": 26.4413,
+        "TR": 0.2441,
+        "Redux": 0
+      },
+      "ExcrescencesDrag": 0.06,
+      "DesignCL": 0.5,
+      "DesignMach": 0.78,
+      "Vtail": {
+        "AR": 3.23,
+        "e": 1,
+        "S": 17.3102,
+        "Eta": 1,
+        "TAF": 0.9,
+        "VArm": 14.6485
+      },
+      "Rudder": {
+        "S": 4.2353,
+        "b": 5.25
+      },
+      "Fuse": {
+        "Area": 9.898,
+        "Len_Diam": 8.9239,
+        "Diam_Span": 0.1235,
+        "DistToEng": 3.8688
+      },
+      "BaseArea": 0
+    },
+    "Propulsion": {
+      "MDotCF": 1.05,
+      "PropArch": {
+        "Type": "C"
+      },
+      "Engine": "CF34_8E5",
+      "NumEngines": 2,
+      "T_W": {
+        "SLS": 0.3393
+      },
+      "Thrust": {
+        "SLS": 129087.3912748597
+      },
+      "Eta": {
+        "Prop": 0.8
+      },
+      "InletArea": [
+        null,
+        null,
+        null,
+        1.4914,
+        1.4914,
+        null
+      ]
+    },
+    "Weight": {
+      "WairfCF": 1.016,
+      "MTOW": 38789.858705290004,
+      "EG": null,
+      "EM": 0,
+      "Fuel": 9427.91741045,
+      "Batt": 0
+    },
+    "Performance": {
+      "Vels": {
+        "Tko": 69.45000000000007,
+        "Crs": 0.78
+      },
+      "Alts": {
+        "Tko": 0,
+        "Crs": 10668
+      },
+      "Range": 3981800.0,
+      "RCMax": 11.430000000000001
+    },
+    "Power": {
+      "SpecEnergy": {
+        "Fuel": 12,
+        "Batt": null
+      },
+      "LamDwn": {
+        "SLS": [],
+        "Tko": [],
+        "Clb": [],
+        "Crs": [],
+        "Des": [],
+        "Lnd": []
+      },
+      "LamUps": {
+        "SLS": [],
+        "Tko": [],
+        "Clb": [],
+        "Crs": [],
+        "Des": [],
+        "Lnd": []
+      },
+      "Eta": {
+        "EM": null,
+        "EG": null
+      },
+      "P_W": {
+        "SLS": null,
+        "EM": null,
+        "EG": null
+      },
+      "Battery": {
+        "ParCells": null,
+        "SerCells": null,
+        "BegSOC": null
+      },
+      "Windmill": {
+        "Tko": 0,
+        "Clb": 0,
+        "Crs": 0,
+        "Des": 0,
+        "Lnd": 0
+      }
+    },
+    "Battery": {
+      "NomVolCell": 3.6,
+      "MaxExtVolCell": 4.088,
+      "CapCell": 3,
+      "IntResist": 0.0199,
+      "ExpVol": 0.0986,
+      "ExpCap": 30,
+      "MinSOC": 20,
+      "BegSOC": 100,
+      "MaxAllowCRate": 5,
+      "Charging": 500000,
+      "Degradation": 0
+    }
+  },
+  "Settings": {
+    "TkoPoints": null,
+    "ClbPoints": null,
+    "CrsPoints": null,
+    "DesPoints": null,
+    "OEW": {
+      "MaxIter": 50,
+      "Tol": 0.001
+    },
+    "Analysis": {
+      "MaxIter": 30,
+      "Type": 1
+    },
+    "Plotting": 0,
+    "Table": 0
+  }
+}

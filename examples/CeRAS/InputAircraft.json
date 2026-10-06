@@ -1,0 +1,108 @@
+{
+  "Specs": {
+    "TLAR": {
+      "EIS": 2005,
+      "Class": "Turbofan",
+      "MaxPax": 218.88276438829473
+    },
+    "Aero": {
+      "L_D": {
+        "ClbCF": 1,
+        "CrsCF": 1,
+        "Method": "ConstantLD",
+        "Clb": 13,
+        "Crs": 17,
+        "Des": 13
+      },
+      "W_S": {
+        "SLS": 739.8499168620069
+      }
+    },
+    "Propulsion": {
+      "MDotCF": 1.2,
+      "PropArch": {
+        "Type": "C"
+      },
+      "Engine": "CeRAS",
+      "NumEngines": 2,
+      "T_W": {
+        "SLS": 0.3
+      },
+      "Eta": {
+        "Prop": 0.8
+      }
+    },
+    "Weight": {
+      "WairfCF": 1,
+      "MTOW": 86182.5503,
+      "EG": null,
+      "EM": 0,
+      "Fuel": 9427.91741045,
+      "Batt": 0
+    },
+    "Performance": {
+      "Vels": {
+        "Tko": 69.45000000000007,
+        "Crs": 0.78
+      },
+      "Alts": {
+        "Tko": 0,
+        "Crs": 10668
+      },
+      "Range": 4630000.0,
+      "RCMax": 11.430000000000001
+    },
+    "Power": {
+      "SpecEnergy": {
+        "Fuel": 12,
+        "Batt": 0.25
+      },
+      "LamDwn": {
+        "SLS": [],
+        "Tko": [],
+        "Clb": [],
+        "Crs": [],
+        "Des": [],
+        "Lnd": []
+      },
+      "LamUps": {
+        "SLS": [],
+        "Tko": [],
+        "Clb": [],
+        "Crs": [],
+        "Des": [],
+        "Lnd": []
+      },
+      "Eta": {
+        "EM": 0.96,
+        "EG": 0.96
+      },
+      "P_W": {
+        "SLS": null,
+        "EM": 10,
+        "EG": null
+      },
+      "Battery": {
+        "ParCells": null,
+        "SerCells": null,
+        "BegSOC": null
+      }
+    }
+  },
+  "Settings": {
+    "TkoPoints": null,
+    "ClbPoints": null,
+    "CrsPoints": null,
+    "DesPoints": null,
+    "OEW": {
+      "MaxIter": 50,
+      "Tol": 0.001
+    },
+    "Analysis": {
+      "MaxIter": 50,
+      "Type": 1
+    },
+    "Plotting": 0,
+    "Table": 0
+  }
+}
