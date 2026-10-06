@@ -1,14 +1,17 @@
 {
   "Specs": {
     "TLAR": {
+      "EIS": null,
       "Class": "Turboprop",
       "MaxPax": 48
     },
     "Performance": {
       "Vels": {
+        "Tko": null,
         "Crs": 0.4
       },
       "Alts": {
+        "Tko": null,
         "Crs": 7620
       },
       "Range": 1326000,
@@ -18,7 +21,8 @@
       "L_D": {
         "Method": "ConstantLD",
         "Clb": 10,
-        "Crs": 12
+        "Crs": 12,
+        "Des": null
       },
       "W_S": {
         "SLS": 342
@@ -27,7 +31,10 @@
     "Weight": {
       "MTOW": 18600,
       "Fuel": 4500,
-      "MLW": null
+      "MLW": null,
+      "Batt": null,
+      "EM": null,
+      "EG": null
     },
     "Propulsion": {
       "PropArch": {
@@ -36,9 +43,13 @@
       "Eta": {
         "Prop": 0.8
       },
+      "T_W": {
+        "SLS": null
+      },
       "Engine": "PW_127M"
     },
     "Power": {
+      "SLS": null,
       "SpecEnergy": {
         "Fuel": 12,
         "Batt": 0.35
@@ -48,7 +59,14 @@
         "EG": 0.96
       },
       "P_W": {
-        "SLS": 0.1731
+        "SLS": 0.1731,
+        "EM": null,
+        "EG": null
+      },
+      "Battery": {
+        "SerCells": null,
+        "ParCells": null,
+        "BegSOC": null
       }
     }
   },

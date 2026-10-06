@@ -1,18 +1,18 @@
 {
   "Specs": {
     "TLAR": {
+      "EIS": 2021,
       "Class": "Turboprop",
-      "MaxPax": 48,
-      "EIS": 2021
+      "MaxPax": 48
     },
     "Performance": {
       "Vels": {
-        "Crs": 0.4,
-        "Tko": 59.16111111111118
+        "Tko": 59.16111111111118,
+        "Crs": 0.4
       },
       "Alts": {
-        "Crs": 7620,
-        "Tko": 0
+        "Tko": 0,
+        "Crs": 7620
       },
       "Range": 1326000.0,
       "RCMax": 7.493
@@ -32,9 +32,9 @@
       "MTOW": 18455.604646130774,
       "Fuel": 2468.29908311711,
       "MLW": 0,
-      "EG": 0,
-      "EM": 0,
       "Batt": 0,
+      "EM": 0,
+      "EG": 0,
       "WairfCF": 1,
       "EAP": 0,
       "Payload": 4560,
@@ -113,6 +113,7 @@
       ]
     },
     "Power": {
+      "SLS": 3194845.2444129647,
       "SpecEnergy": {
         "Fuel": 43200000.0,
         "Batt": 1260000.0
@@ -127,7 +128,11 @@
         "EM": 9499.07545646476,
         "EG": 5000
       },
-      "SLS": 3194845.2444129647,
+      "Battery": {
+        "SerCells": "NaN",
+        "ParCells": "NaN",
+        "BegSOC": "NaN"
+      },
       "LamDwn": {
         "SLS": [],
         "Tko": [],
@@ -143,11 +148,6 @@
         "Crs": [],
         "Des": [],
         "Lnd": []
-      },
-      "Battery": {
-        "ParCells": "NaN",
-        "SerCells": "NaN",
-        "BegSOC": "NaN"
       },
       "Windmill": {
         "Tko": 0,
