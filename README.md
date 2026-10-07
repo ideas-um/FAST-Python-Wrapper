@@ -20,7 +20,7 @@ The wrapper passes aircraft data through to FAST and keeps wrapper-side rules li
 
 Custom `O` propulsion architectures support fixed numeric vectors or matrices, and JSON inputs can use explicit `_matlab_expression` marker objects when FAST needs a function handle. To vary a fixed topology by mission segment, provide paired `OperUpsBySegment` and `OperDwnBySegment` lists; each list contains one numeric matrix per `Mission.Profile.Segs` row.
 
-Segment-specific `OperUpsBySegment` and `OperDwnBySegment` support requires FAST branch `gengnns4gpsa`. The compatible FAST revision pinned by ASTRA is `adeff17cd7734cbd669cb59499556caf6ff248af`; FAST `main` at `482e77b921d616d00d9cdb5c0c673d55f511c52b` does not consume these fields.
+Segment-specific `OperUpsBySegment` and `OperDwnBySegment` support tracks FAST branch `triet`. The compatible FAST revision pinned by ASTRA is `2574ac4187fadfd19bca1854874d484fa6ca8e63`.
 
 By default, `FAST_Python_Wrapper()` returns the full FAST output after converting MATLAB values into Python data. Use `simplify_output=True` only when regenerating or comparing the repository's simplified JSON fixtures.
 
