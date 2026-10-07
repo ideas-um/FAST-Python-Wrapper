@@ -14,6 +14,7 @@ from tests.helpers import (
     "case_name",
     [
         "ATR42",
+        "B777300ER",
         "CeRAS",
         "ERJ175LR",
     ],

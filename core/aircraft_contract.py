@@ -16,6 +16,7 @@ ENGINE_SPEC_NAMES = (
     "CF6_80C2_B7F",
     "ExampleTF",
     "ExampleTP",
+    "GE90_115B",
     "LEAP_1A26",
     "PT6A_114A",
     "PW_123",
