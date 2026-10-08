@@ -24,13 +24,14 @@ def json_schema_number():
     }
 
 
-def json_schema_prop_arch():
-    """Return the public propulsion architecture schema.
+def json_schema_output_prop_arch():
+    """Return the simplified output propulsion architecture schema.
 
     Assumptions:
-        OutputAircraft exposes only the public FAST architecture label. Custom
-        O matrix details are accepted by the committed input schema but are not
-        preserved in reusable output data.
+        InputAircraft may carry preset-specific architecture payloads. Simplified
+        OutputAircraft exposes only the public FAST architecture label because
+        FAST expands runtime graph fields that are not stable reusable output
+        data.
     """
 
     return {
@@ -48,8 +49,8 @@ def json_schema_prop_arch():
     }
 
 
-def apply_prop_arch_schema_contract(schema):
-    """Limit every PropArch schema branch to the supported Type field.
+def apply_output_prop_arch_schema_contract(schema):
+    """Limit simplified output PropArch schema branches to the supported Type field.
 
     Inputs:
         schema: Generated JSON Schema dictionary or subtree.
@@ -58,8 +59,8 @@ def apply_prop_arch_schema_contract(schema):
         The same schema object after in-place normalization.
 
     Side effects:
-        Mutates generated schemas so historical/reference output data cannot
-        reintroduce internal PropArch graph fields.
+        Mutates generated output schemas so historical/reference output data
+        cannot reintroduce internal PropArch graph fields.
     """
 
     if isinstance(schema, dict):
@@ -68,20 +69,20 @@ def apply_prop_arch_schema_contract(schema):
         if isinstance(properties, dict):
             for key, item in list(properties.items()):
                 if key == "PropArch":
-                    properties[key] = json_schema_prop_arch()
+                    properties[key] = json_schema_output_prop_arch()
                 else:
-                    apply_prop_arch_schema_contract(item)
+                    apply_output_prop_arch_schema_contract(item)
 
         if "items" in schema:
-            apply_prop_arch_schema_contract(schema["items"])
+            apply_output_prop_arch_schema_contract(schema["items"])
 
         if "anyOf" in schema:
             for item in schema["anyOf"]:
-                apply_prop_arch_schema_contract(item)
+                apply_output_prop_arch_schema_contract(item)
 
     if isinstance(schema, list):
         for item in schema:
-            apply_prop_arch_schema_contract(item)
+            apply_output_prop_arch_schema_contract(item)
 
     return schema
 

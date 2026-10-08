@@ -4,7 +4,7 @@
 
 from .json_io import build_json_data
 from .schema_builder import (
-    apply_prop_arch_schema_contract,
+    apply_output_prop_arch_schema_contract,
     build_json_schema_from_value,
 )
 from .schema_validation import (
@@ -40,7 +40,7 @@ def build_output_aircraft_structure(value):
             require_lengths=False,
         )
     )
-    return apply_prop_arch_schema_contract(schema)
+    return apply_output_prop_arch_schema_contract(schema)
 
 
 def print_output_aircraft_structure(
