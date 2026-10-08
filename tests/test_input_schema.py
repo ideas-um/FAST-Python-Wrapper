@@ -373,6 +373,37 @@ def test_prepare_aircraft_normalizes_fast_preset_prop_arch(arch_type):
     }
 
 
+def test_input_aircraft_contract_accepts_phe_power_management_payload():
+    """Allow PHE cases to carry FAST power split architecture inputs."""
+
+    data = read_raw_json_file(DEFAULT_INPUT_DIR / "InputAircraft.json")
+    changed = deepcopy(data)
+    changed["Specs"]["Propulsion"]["PropArch"] = phe_prop_arch_payload()
+    changed["Specs"]["Power"]["Phi"] = {
+        "SLS": 0.25,
+    }
+
+    validate_aircraft_json(changed)
+
+
+def test_prepare_aircraft_preserves_phe_power_management_payload():
+    """Keep PHE payload fields instead of collapsing them to Type only."""
+
+    prop_arch = phe_prop_arch_payload()
+    prop_arch["Type"] = "phe"
+    prepared = prepare_aircraft(
+        {
+            "Specs": {
+                "Propulsion": {
+                    "PropArch": prop_arch,
+                },
+            },
+        }
+    )
+
+    assert prepared["Specs"]["Propulsion"]["PropArch"] == phe_prop_arch_payload()
+
+
 def test_input_aircraft_contract_accepts_fixed_numeric_custom_prop_arch():
     """Allow O propulsion architectures with fixed numeric matrix fields."""
 
@@ -544,6 +575,25 @@ def fixed_custom_prop_arch():
         "TrnType": [
             1,
             2,
+        ],
+    }
+
+
+def phe_prop_arch_payload():
+    """Return a minimal preset PHE payload with explicit split matrices."""
+
+    return {
+        "Type": "PHE",
+        "TSPS": [
+            [1, 0],
+        ],
+        "PSPS": [
+            [1, 0],
+            [0, 1],
+        ],
+        "PSES": [
+            [1, 0],
+            [0, 1],
         ],
     }
 

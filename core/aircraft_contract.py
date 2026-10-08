@@ -111,7 +111,7 @@ def prepare_aircraft(aircraft):
     if arch_type == PROP_ARCH_CUSTOM_TYPE:
         _prepare_custom_prop_arch(propulsion)
     else:
-        propulsion["PropArch"] = {"Type": arch_type}
+        prop_arch["Type"] = arch_type
 
     _prepare_power_defaults(aircraft)
     _prepare_aero_method(aircraft)

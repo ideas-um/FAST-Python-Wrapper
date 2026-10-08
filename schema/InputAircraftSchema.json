@@ -305,7 +305,7 @@
                   "required": [
                     "Type"
                   ],
-                  "additionalProperties": false,
+                  "additionalProperties": true,
                   "properties": {
                     "Type": {
                       "type": "string",
@@ -621,6 +621,19 @@
                   ],
                   "description": "Aircraft power-to-weight ratio after internal processing.",
                   "units": "W/kg"
+                }
+              }
+            },
+            "Phi": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "SLS": {
+                  "type": "number",
+                  "description": "Sea-level-static design electric power split for hybrid architectures.",
+                  "units": "unitless",
+                  "minimum": 0,
+                  "maximum": 1
                 }
               }
             },
