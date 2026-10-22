@@ -17,7 +17,14 @@ from core.matlab_bridge import (
 from core.json_io import build_json_data, normalize_json_data
 
 
-def FAST_Python_Wrapper(input_aircraft, mission, fast_path, simplify_output=False):
+def FAST_Python_Wrapper(
+    input_aircraft,
+    mission,
+    fast_path,
+    simplify_output=False,
+    state_input_path=None,
+    state_output_path=None,
+):
     """Run FAST once from Python InputAircraft and Mission dictionaries.
 
     Inputs:
@@ -33,6 +40,10 @@ def FAST_Python_Wrapper(input_aircraft, mission, fast_path, simplify_output=Fals
             empty dictionary when FAST does not produce one.
         Pass simplify_output=True to remove wrapper-specific runtime fields
             used by the committed JSON fixtures.
+        Pass state_output_path to preserve the native MATLAB aircraft needed
+            for a later fixed-aircraft run. Pass that artifact back through
+            state_input_path to retain function handles and derived graph data
+            that cannot be represented in JSON.
 
     Side effects:
         Starts MATLAB Engine, adds FAST to the MATLAB path, runs Main.m, and
@@ -51,6 +62,8 @@ def FAST_Python_Wrapper(input_aircraft, mission, fast_path, simplify_output=Fals
             mission_python = extract_mission_profile(normalize_json_data(mission))
             aircraft_matlab = python_to_matlab(aircraft_python)
             mission_matlab = python_to_matlab(mission_python)
+            aircraft_setup = _aircraft_setup(aircraft_matlab, state_input_path)
+            state_save = _state_save(state_output_path)
         except Exception as error:
             return {
                 "status": "No",
@@ -62,13 +75,15 @@ def FAST_Python_Wrapper(input_aircraft, mission, fast_path, simplify_output=Fals
             # Run FAST in MATLAB
             log = engine.evalc(
                 f"""
-                aircraft_spec = {aircraft_matlab};
+                requested_aircraft = {aircraft_matlab};
+                {aircraft_setup}
                 mission_profile = @(Aircraft) setfield(Aircraft, "Mission", "Profile", {mission_matlab});
                 fast_result = struct();
                 fast_result_json = '';
                 fast_status = 'No';
                 try
                     fast_result = Main(aircraft_spec, mission_profile);
+                    {state_save}
                     fast_result_json = jsonencode(fast_json_ready(fast_result));
                     fast_status = 'Yes';
                 catch fast_exception
@@ -123,3 +138,31 @@ def FAST_Python_Wrapper(input_aircraft, mission, fast_path, simplify_output=Fals
     finally:
         # Quit MATLAB Engine
         engine.quit()
+
+
+def _aircraft_setup(aircraft_matlab, state_input_path):
+    """Build MATLAB statements for a fresh or native-state FAST run."""
+    if state_input_path is None:
+        return "aircraft_spec = requested_aircraft;"
+    state_path = _matlab_string(state_input_path)
+    return f"""
+                saved_state = load('{state_path}', 'fast_result');
+                aircraft_spec = saved_state.fast_result;
+                aircraft_spec.Settings.Analysis = requested_aircraft.Settings.Analysis;
+                aircraft_spec.Specs.Power.LamUps = requested_aircraft.Specs.Power.LamUps;
+                aircraft_spec.Specs.Power.LamDwn = requested_aircraft.Specs.Power.LamDwn;
+    """.strip()
+
+
+def _state_save(state_output_path):
+    """Build the optional MATLAB statement that preserves native FAST state."""
+    if state_output_path is None:
+        return ""
+    state_path = Path(state_output_path)
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    return f"save('{_matlab_string(state_path)}', 'fast_result', '-v7.3');"
+
+
+def _matlab_string(value):
+    """Escape one filesystem path for a single-quoted MATLAB string."""
+    return str(Path(value).resolve()).replace("'", "''")

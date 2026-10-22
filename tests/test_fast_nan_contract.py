@@ -19,6 +19,8 @@ from core.schema_validation import (
 from tests.helpers import PROJECT_ROOT
 import main as wrapper_module
 from main import FAST_Python_Wrapper
+from main import _aircraft_setup
+from main import _state_save
 
 
 DEFAULT_INPUT_PATH = PROJECT_ROOT / "examples" / "ATR42" / "InputAircraft.json"
@@ -252,3 +254,27 @@ def test_output_keeps_fast_supported_prop_arch_labels(arch_type):
     assert output["Specs"]["Propulsion"]["PropArch"] == {
         "Type": arch_type,
     }
+
+
+def test_native_state_setup_preserves_fast_runtime_fields(tmp_path):
+    """Reload native sizing state and overlay only fixed-run controls."""
+    state_path = tmp_path / "Sized Aircraft.mat"
+
+    setup = _aircraft_setup("struct()", state_path)
+
+    assert "saved_state = load(" in setup
+    assert "aircraft_spec = saved_state.fast_result" in setup
+    assert "aircraft_spec.Settings.Analysis = requested_aircraft.Settings.Analysis" in setup
+    assert "aircraft_spec.Specs.Power.LamUps = requested_aircraft.Specs.Power.LamUps" in setup
+    assert "aircraft_spec.Specs.Power.LamDwn = requested_aircraft.Specs.Power.LamDwn" in setup
+
+
+def test_native_state_save_creates_parent_and_escapes_path(tmp_path):
+    """Save replay state to a run-owned path accepted by MATLAB."""
+    state_path = tmp_path / "quoted's" / "SizedAircraft.mat"
+
+    statement = _state_save(state_path)
+
+    assert state_path.parent.is_dir()
+    assert "quoted''s" in statement
+    assert "'-v7.3'" in statement
