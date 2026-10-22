@@ -18,9 +18,9 @@ The core wrapper accepts an `input_aircraft` dictionary, a separate `mission` di
 
 The wrapper passes aircraft data through to FAST and keeps wrapper-side rules limited to the MATLAB bridge. Known FAST package functions can be written as short names, such as engine specs, aero methods, and geometry presets. New FAST package functions also work when their function name is a valid MATLAB identifier.
 
-Custom `O` propulsion architectures support fixed numeric vectors or matrices, and JSON inputs can use explicit `_matlab_expression` marker objects when FAST needs a function handle. To vary a fixed topology by mission segment, provide paired `OperUpsBySegment` and `OperDwnBySegment` lists; each list contains one numeric matrix per `Mission.Profile.Segs` row.
+Custom `O` propulsion architectures support fixed numeric vectors or matrices, and JSON inputs can use explicit `_matlab_expression` marker objects when FAST needs a function handle.
 
-Segment-specific `OperUpsBySegment` and `OperDwnBySegment` support requires FAST branch `gengnns4gpsa`. The compatible FAST revision pinned by ASTRA is `adeff17cd7734cbd669cb59499556caf6ff248af`; FAST `main` at `482e77b921d616d00d9cdb5c0c673d55f511c52b` does not consume these fields.
+This branch targets FAST branch `astra` at revision `e5dbdd10b49d53a0620f4645cedc4d24eb13c4c8`. Mission-phase PHE behavior is supplied through FAST's `Specs.Power.LamUps` and `Specs.Power.LamDwn` fields; the FAST `astra` branch does not consume segment-specific custom-architecture matrices.
 
 By default, `FAST_Python_Wrapper()` returns the full FAST output after converting MATLAB values into Python data. Use `simplify_output=True` only when regenerating or comparing the repository's simplified JSON fixtures.
 

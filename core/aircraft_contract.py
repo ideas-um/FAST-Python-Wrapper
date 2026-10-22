@@ -54,7 +54,6 @@ PROP_ARCH_PRESET_TYPES = ("C", "E", "PHE", "SHE", "TE", "PE")
 PROP_ARCH_CUSTOM_TYPE = "O"
 PROP_ARCH_TYPES = PROP_ARCH_PRESET_TYPES + (PROP_ARCH_CUSTOM_TYPE,)
 MATLAB_EXPRESSION_KEY = "_matlab_expression"
-MATLAB_CELL_KEY = "_matlab_cell"
 MATLAB_IDENTIFIER = re.compile(r"^[A-Za-z]\w*$")
 CUSTOM_PROP_ARCH_FIELDS = (
     "Arch",
@@ -188,8 +187,7 @@ def _get_propulsion_section(aircraft):
 def _prepare_custom_prop_arch(propulsion):
     """Normalize and validate fixed numeric custom architecture data.
 
-    Optional segment operational matrices are converted to MATLAB cell arrays
-    whose order maps directly to Mission.Profile.Segs.
+    The FAST astra branch accepts one fixed operational matrix per direction.
     """
 
     prop_arch = propulsion.get("PropArch")
@@ -207,22 +205,6 @@ def _prepare_custom_prop_arch(propulsion):
             prop_arch[field_name],
             f"PropArch.{field_name}",
         )
-
-    segment_fields = ("OperUpsBySegment", "OperDwnBySegment")
-    present_fields = [field for field in segment_fields if field in prop_arch]
-
-    if present_fields and len(present_fields) != len(segment_fields):
-        raise ValueError(
-            "PropArch.OperUpsBySegment and PropArch.OperDwnBySegment "
-            "must be supplied together."
-        )
-
-    for field_name in present_fields:
-        matrices = prop_arch[field_name]
-        _require_segment_matrices(matrices, f"PropArch.{field_name}")
-        prop_arch[field_name] = {
-            MATLAB_CELL_KEY: matrices,
-        }
 
 
 def _prepare_engine_spec(propulsion):
@@ -337,31 +319,6 @@ def _require_fixed_numeric_value(value, label):
         return
 
     raise ValueError(f"{label} must contain only fixed numeric values.")
-
-
-def _require_segment_matrices(value, label):
-    """Require a nonempty ordered list of fixed numeric two-dimensional matrices."""
-
-    if (not isinstance(value, list) and not isinstance(value, tuple)) or not value:
-        raise ValueError(f"{label} must be a nonempty list of numeric matrices.")
-
-    for segment_index, matrix in enumerate(value):
-        matrix_label = f"{label}[{segment_index}]"
-        if (not isinstance(matrix, list) and not isinstance(matrix, tuple)) or not matrix:
-            raise ValueError(f"{matrix_label} must be a numeric matrix.")
-
-        row_length = None
-        for row_index, row in enumerate(matrix):
-            if (not isinstance(row, list) and not isinstance(row, tuple)) or not row:
-                raise ValueError(f"{matrix_label}[{row_index}] must be a numeric row.")
-            if row_length is None:
-                row_length = len(row)
-            elif len(row) != row_length:
-                raise ValueError(f"{matrix_label} rows must have equal lengths.")
-            _require_fixed_numeric_value(row, f"{matrix_label}[{row_index}]")
-
-        if len(matrix) != row_length:
-            raise ValueError(f"{matrix_label} must be square.")
 
 
 def _require_matlab_identifier(value, label):
