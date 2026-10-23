@@ -460,57 +460,6 @@ def test_prepare_aircraft_converts_custom_oper_matrices_directly():
     assert '"OperDwn", [1, 0; 0, 1]' in matlab_source
 
 
-def test_prepare_aircraft_converts_segment_oper_matrices_to_cells():
-    """Send ordered segment matrices as MATLAB cell arrays for FAST indexing."""
-
-    prop_arch = fixed_custom_prop_arch()
-    prop_arch["OperUpsBySegment"] = [
-        [[1, 0], [0, 1]],
-        [[0.95, 0], [0, 1]],
-    ]
-    prop_arch["OperDwnBySegment"] = [
-        [[1, 0], [0, 1]],
-        [[1, 0], [0, 0.95]],
-    ]
-
-    validate_json_schema_document(
-        prop_arch,
-        prop_arch_schema(),
-        "InputAircraft.json.Specs.Propulsion.PropArch",
-    )
-    prepared = prepare_aircraft(
-        {
-            "Specs": {
-                "Propulsion": {
-                    "PropArch": prop_arch,
-                },
-            },
-        }
-    )
-    matlab_source = python_to_matlab(prepared["Specs"]["Propulsion"]["PropArch"])
-
-    assert '"OperUpsBySegment", {{[1, 0; 0, 1]; [0.95, 0; 0, 1]}}' in matlab_source
-    assert '"OperDwnBySegment", {{[1, 0; 0, 1]; [1, 0; 0, 0.95]}}' in matlab_source
-
-
-def test_prepare_aircraft_requires_both_segment_oper_matrix_lists():
-    """Reject an incomplete upstream/downstream segment matrix definition."""
-
-    prop_arch = fixed_custom_prop_arch()
-    prop_arch["OperUpsBySegment"] = [prop_arch["OperUps"]]
-
-    with pytest.raises(ValueError, match="must be supplied together"):
-        prepare_aircraft(
-            {
-                "Specs": {
-                    "Propulsion": {
-                        "PropArch": prop_arch,
-                    },
-                },
-            }
-        )
-
-
 def test_prepare_aircraft_rejects_custom_prop_arch_variables():
     """Reject direct Python calls with nonnumeric values in O matrices."""
 

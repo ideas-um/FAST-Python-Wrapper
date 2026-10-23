@@ -409,38 +409,6 @@
                         }
                       ]
                     },
-                    "OperUpsBySegment": {
-                      "description": "Ordered upstream operational matrices, one per Mission.Profile.Segs row.",
-                      "type": "array",
-                      "minItems": 1,
-                      "items": {
-                        "type": "array",
-                        "minItems": 1,
-                        "items": {
-                          "type": "array",
-                          "minItems": 1,
-                          "items": {
-                            "type": "number"
-                          }
-                        }
-                      }
-                    },
-                    "OperDwnBySegment": {
-                      "description": "Ordered downstream operational matrices, one per Mission.Profile.Segs row.",
-                      "type": "array",
-                      "minItems": 1,
-                      "items": {
-                        "type": "array",
-                        "minItems": 1,
-                        "items": {
-                          "type": "array",
-                          "minItems": 1,
-                          "items": {
-                            "type": "number"
-                          }
-                        }
-                      }
-                    },
                     "EtaUps": {
                       "description": "Fixed numeric upstream efficiency matrix.",
                       "anyOf": [

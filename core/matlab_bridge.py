@@ -103,9 +103,6 @@ def python_to_matlab(value):
         if keys == {"_matlab_row"}:
             return _to_matlab_row(value["_matlab_row"])
 
-        if keys == {"_matlab_cell"}:
-            return _to_matlab_cell(value["_matlab_cell"])
-
         fields = []
 
         for key, item in value.items():
@@ -183,22 +180,6 @@ def _to_matlab_row(value):
         raise TypeError("MATLAB row values must be one-dimensional.")
 
     return "[" + ", ".join(python_to_matlab(item) for item in value) + "]"
-
-
-def _to_matlab_cell(value):
-    """Convert a sequence into a MATLAB column cell array.
-
-    The wrapper uses this internal marker for ordered per-segment matrices;
-    ordinary nested JSON arrays continue to mean numeric MATLAB matrices.
-    """
-
-    if not isinstance(value, list) and not isinstance(value, tuple):
-        raise TypeError("MATLAB cell values must be a list or tuple.")
-
-    # The outer scalar cell prevents MATLAB's struct constructor from
-    # expanding one input object into a struct array. MATLAB consumes that
-    # wrapper and stores the inner column cell array in the field.
-    return "{{" + "; ".join(python_to_matlab(item) for item in value) + "}}"
 
 
 def matlab_to_python(value):
