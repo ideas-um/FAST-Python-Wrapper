@@ -10,6 +10,7 @@ from core.aircraft_contract import (
     AERO_METHOD_NAMES,
     ENGINE_SPEC_NAMES,
     GEOMETRY_PRESET_NAMES,
+    extract_mission_profile,
     prepare_aircraft,
 )
 from core.json_io import (
@@ -33,6 +34,9 @@ DEFAULT_INPUT_DIR = PROJECT_ROOT / "examples" / "ATR42"
 EXAMPLES_DIR = PROJECT_ROOT / "examples"
 CASE_NAMES = [
     "ATR42",
+    "B777300ER",
+    "CeRAS",
+    "ERJ175LR",
 ]
 
 
@@ -427,6 +431,96 @@ def test_prepare_aircraft_converts_custom_oper_matrices_directly():
 
     assert '"OperUps", [1, 0; 0, 1]' in matlab_source
     assert '"OperDwn", [1, 0; 0, 1]' in matlab_source
+
+
+def test_prepare_aircraft_converts_segment_oper_matrices_to_cells():
+    """Send ordered segment matrices as MATLAB cell arrays for FAST indexing."""
+
+    prop_arch = fixed_custom_prop_arch()
+    prop_arch["OperUpsBySegment"] = [
+        [[1, 0], [0, 1]],
+        [[0.95, 0], [0, 1]],
+    ]
+    prop_arch["OperDwnBySegment"] = [
+        [[1, 0], [0, 1]],
+        [[1, 0], [0, 0.95]],
+    ]
+
+    validate_json_schema_document(
+        prop_arch,
+        prop_arch_schema(),
+        "InputAircraft.json.Specs.Propulsion.PropArch",
+    )
+    prepared = prepare_aircraft(
+        {
+            "Specs": {
+                "Propulsion": {
+                    "PropArch": prop_arch,
+                },
+            },
+        }
+    )
+    matlab_source = python_to_matlab(prepared["Specs"]["Propulsion"]["PropArch"])
+
+    assert '"OperUpsBySegment", {{[1, 0; 0, 1]; [0.95, 0; 0, 1]}}' in matlab_source
+    assert '"OperDwnBySegment", {{[1, 0; 0, 1]; [1, 0; 0, 0.95]}}' in matlab_source
+
+
+def test_prepare_aircraft_requires_both_segment_oper_matrix_lists():
+    """Reject an incomplete upstream/downstream segment matrix definition."""
+
+    prop_arch = fixed_custom_prop_arch()
+    prop_arch["OperUpsBySegment"] = [prop_arch["OperUps"]]
+
+    with pytest.raises(ValueError, match="must be supplied together"):
+        prepare_aircraft(
+            {
+                "Specs": {
+                    "Propulsion": {
+                        "PropArch": prop_arch,
+                    },
+                },
+            }
+        )
+
+
+def test_extract_mission_profile_converts_pointwise_splits_to_cells():
+    """Send one pointwise lambda matrix per segment as MATLAB cells."""
+
+    mission = {
+        "Profile": {
+            "LamDwnBySegment": [
+                [[0.1], [0.2]],
+                [[0.3], [0.4], [0.5]],
+            ],
+            "LamUpsBySegment": [
+                [[1], [1]],
+                [[0], [0], [0]],
+            ],
+        },
+    }
+
+    profile = extract_mission_profile(mission)
+    matlab_source = python_to_matlab(profile)
+
+    assert '"LamDwnBySegment", {{[0.1; 0.2]; [0.3; 0.4; 0.5]}}' in matlab_source
+    assert '"LamUpsBySegment", {{[1; 1]; [0; 0; 0]}}' in matlab_source
+    assert "_matlab_cell" not in mission["Profile"]
+
+
+def test_extract_mission_profile_rejects_nonfinite_pointwise_splits():
+    """Reject lambda histories that FAST cannot evaluate as finite commands."""
+
+    mission = {
+        "Profile": {
+            "LamDwnBySegment": [
+                [[float("nan")]],
+            ],
+        },
+    }
+
+    with pytest.raises(ValueError, match="finite number"):
+        extract_mission_profile(mission)
 
 
 def test_prepare_aircraft_rejects_custom_prop_arch_variables():

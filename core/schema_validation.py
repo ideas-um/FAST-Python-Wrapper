@@ -447,6 +447,16 @@ def validate_json_markers(value, file_name, path=""):
                 )
                 return
 
+            if keys == {"_matlab_cell"}:
+                if not isinstance(value["_matlab_cell"], list):
+                    raise JsonValidationError(f"{label}._matlab_cell must be an array.")
+                validate_json_markers(
+                    value["_matlab_cell"],
+                    file_name,
+                    f"{label}._matlab_cell",
+                )
+                return
+
             raise JsonValidationError(f"{label} contains invalid marker keys.")
 
         for key, item in value.items():

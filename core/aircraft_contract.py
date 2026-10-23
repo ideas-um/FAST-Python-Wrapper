@@ -2,6 +2,7 @@
 
 """Keep Python aircraft dictionaries aligned with the public FAST contract."""
 
+import math
 import re
 from copy import deepcopy
 
@@ -54,6 +55,7 @@ PROP_ARCH_PRESET_TYPES = ("C", "E", "PHE", "SHE", "TE", "PE")
 PROP_ARCH_CUSTOM_TYPE = "O"
 PROP_ARCH_TYPES = PROP_ARCH_PRESET_TYPES + (PROP_ARCH_CUSTOM_TYPE,)
 MATLAB_EXPRESSION_KEY = "_matlab_expression"
+MATLAB_CELL_KEY = "_matlab_cell"
 MATLAB_IDENTIFIER = re.compile(r"^[A-Za-z]\w*$")
 CUSTOM_PROP_ARCH_FIELDS = (
     "Arch",
@@ -138,6 +140,18 @@ def extract_mission_profile(mission):
     if not isinstance(profile, dict):
         raise ValueError("Mission.Profile must be an object.")
 
+    profile = deepcopy(profile)
+
+    for field_name in ("LamDwnBySegment", "LamUpsBySegment"):
+        if field_name not in profile:
+            continue
+
+        histories = profile[field_name]
+        _require_segment_histories(histories, f"Mission.Profile.{field_name}")
+        profile[field_name] = {
+            MATLAB_CELL_KEY: histories,
+        }
+
     return profile
 
 
@@ -157,15 +171,6 @@ def clean_output_fields(output):
 
         if isinstance(current, dict):
             current.pop(path[-1], None)
-
-    settings = output.get("Settings")
-
-    if isinstance(settings, dict):
-        for key in list(settings):
-            key_text = key.lower()
-
-            if key_text.startswith("narg") and "oper" in key_text:
-                del settings[key]
 
     _clean_prop_arch_fields(output)
 
@@ -187,7 +192,8 @@ def _get_propulsion_section(aircraft):
 def _prepare_custom_prop_arch(propulsion):
     """Normalize and validate fixed numeric custom architecture data.
 
-    The FAST astra branch accepts one fixed operational matrix per direction.
+    Optional segment operational matrices are converted to MATLAB cell arrays
+    whose order maps directly to Mission.Profile.Segs.
     """
 
     prop_arch = propulsion.get("PropArch")
@@ -205,6 +211,22 @@ def _prepare_custom_prop_arch(propulsion):
             prop_arch[field_name],
             f"PropArch.{field_name}",
         )
+
+    segment_fields = ("OperUpsBySegment", "OperDwnBySegment")
+    present_fields = [field for field in segment_fields if field in prop_arch]
+
+    if present_fields and len(present_fields) != len(segment_fields):
+        raise ValueError(
+            "PropArch.OperUpsBySegment and PropArch.OperDwnBySegment "
+            "must be supplied together."
+        )
+
+    for field_name in present_fields:
+        matrices = prop_arch[field_name]
+        _require_segment_matrices(matrices, f"PropArch.{field_name}")
+        prop_arch[field_name] = {
+            MATLAB_CELL_KEY: matrices,
+        }
 
 
 def _prepare_engine_spec(propulsion):
@@ -319,6 +341,53 @@ def _require_fixed_numeric_value(value, label):
         return
 
     raise ValueError(f"{label} must contain only fixed numeric values.")
+
+
+def _require_segment_histories(value, label):
+    """Require a nonempty list of rectangular finite numeric matrices."""
+
+    if (not isinstance(value, list) and not isinstance(value, tuple)) or not value:
+        raise ValueError(f"{label} must be a nonempty list of numeric matrices.")
+
+    for segment_index, matrix in enumerate(value):
+        matrix_label = f"{label}[{segment_index}]"
+        _require_numeric_matrix(matrix, matrix_label, require_square=False)
+
+
+def _require_segment_matrices(value, label):
+    """Require a nonempty ordered list of fixed numeric square matrices."""
+
+    if (not isinstance(value, list) and not isinstance(value, tuple)) or not value:
+        raise ValueError(f"{label} must be a nonempty list of numeric matrices.")
+
+    for segment_index, matrix in enumerate(value):
+        matrix_label = f"{label}[{segment_index}]"
+        _require_numeric_matrix(matrix, matrix_label, require_square=True)
+
+
+def _require_numeric_matrix(value, label, require_square):
+    """Require one rectangular numeric matrix, optionally square."""
+
+    if (not isinstance(value, list) and not isinstance(value, tuple)) or not value:
+        raise ValueError(f"{label} must be a numeric matrix.")
+
+    row_length = None
+    for row_index, row in enumerate(value):
+        if (not isinstance(row, list) and not isinstance(row, tuple)) or not row:
+            raise ValueError(f"{label}[{row_index}] must be a numeric row.")
+        if row_length is None:
+            row_length = len(row)
+        elif len(row) != row_length:
+            raise ValueError(f"{label} rows must have equal lengths.")
+        for column_index, item in enumerate(row):
+            item_label = f"{label}[{row_index}][{column_index}]"
+            if isinstance(item, bool) or not isinstance(item, (int, float)):
+                raise ValueError(f"{item_label} must be a finite number.")
+            if not math.isfinite(item):
+                raise ValueError(f"{item_label} must be a finite number.")
+
+    if require_square and len(value) != row_length:
+        raise ValueError(f"{label} must be square.")
 
 
 def _require_matlab_identifier(value, label):

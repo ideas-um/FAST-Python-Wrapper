@@ -151,6 +151,9 @@ def _aircraft_setup(aircraft_matlab, state_input_path):
                 aircraft_spec.Settings.Analysis = requested_aircraft.Settings.Analysis;
                 aircraft_spec.Specs.Power.LamUps = requested_aircraft.Specs.Power.LamUps;
                 aircraft_spec.Specs.Power.LamDwn = requested_aircraft.Specs.Power.LamDwn;
+                if isfield(requested_aircraft.Settings, 'PowerManagement')
+                    aircraft_spec.Settings.PowerManagement = requested_aircraft.Settings.PowerManagement;
+                end
     """.strip()
 
 

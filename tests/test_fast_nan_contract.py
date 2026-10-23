@@ -267,6 +267,7 @@ def test_native_state_setup_preserves_fast_runtime_fields(tmp_path):
     assert "aircraft_spec.Settings.Analysis = requested_aircraft.Settings.Analysis" in setup
     assert "aircraft_spec.Specs.Power.LamUps = requested_aircraft.Specs.Power.LamUps" in setup
     assert "aircraft_spec.Specs.Power.LamDwn = requested_aircraft.Specs.Power.LamDwn" in setup
+    assert "aircraft_spec.Settings.PowerManagement = requested_aircraft.Settings.PowerManagement" in setup
 
 
 def test_native_state_save_creates_parent_and_escapes_path(tmp_path):

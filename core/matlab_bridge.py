@@ -103,6 +103,9 @@ def python_to_matlab(value):
         if keys == {"_matlab_row"}:
             return _to_matlab_row(value["_matlab_row"])
 
+        if keys == {"_matlab_cell"}:
+            return _to_matlab_cell(value["_matlab_cell"])
+
         fields = []
 
         for key, item in value.items():
@@ -180,6 +183,20 @@ def _to_matlab_row(value):
         raise TypeError("MATLAB row values must be one-dimensional.")
 
     return "[" + ", ".join(python_to_matlab(item) for item in value) + "]"
+
+
+def _to_matlab_cell(value):
+    """Convert a sequence into a MATLAB column cell array.
+
+    The outer scalar cell prevents MATLAB's struct constructor from expanding
+    the input into a struct array. MATLAB consumes that wrapper and stores the
+    inner column cell array as the field value.
+    """
+
+    if not isinstance(value, list) and not isinstance(value, tuple):
+        raise TypeError("MATLAB cell values must be a list or tuple.")
+
+    return "{{" + "; ".join(python_to_matlab(item) for item in value) + "}}"
 
 
 def matlab_to_python(value):

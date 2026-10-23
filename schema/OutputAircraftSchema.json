@@ -217,6 +217,22 @@
             "Type"
           ]
         },
+        "PowerManagement": {
+          "type": "object",
+          "properties": {
+            "Mode": {
+              "type": "string",
+              "enum": [
+                "RecomputeLambda",
+                "SupplyLambda"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "Mode"
+          ]
+        },
         "Plotting": {
           "type": "number"
         },
@@ -262,6 +278,7 @@
         "DesPoints",
         "OEW",
         "Analysis",
+        "PowerManagement",
         "Plotting",
         "Table",
         "VisualizeAircraft",

@@ -79,6 +79,11 @@ def build_json_data(value):
                 "_matlab_row": build_json_data(value["_matlab_row"]),
             }
 
+        if keys == {"_matlab_cell"}:
+            return {
+                "_matlab_cell": build_json_data(value["_matlab_cell"]),
+            }
+
         return {
             key: build_json_data(item)
             for key, item in value.items()
@@ -137,6 +142,11 @@ def normalize_json_data(value):
         if set(value.keys()) == {"_matlab_row"}:
             return {
                 "_matlab_row": normalize_json_data(value["_matlab_row"]),
+            }
+
+        if set(value.keys()) == {"_matlab_cell"}:
+            return {
+                "_matlab_cell": normalize_json_data(value["_matlab_cell"]),
             }
 
         return {
