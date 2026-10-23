@@ -56,6 +56,7 @@ PROP_ARCH_CUSTOM_TYPE = "O"
 PROP_ARCH_TYPES = PROP_ARCH_PRESET_TYPES + (PROP_ARCH_CUSTOM_TYPE,)
 MATLAB_EXPRESSION_KEY = "_matlab_expression"
 MATLAB_CELL_KEY = "_matlab_cell"
+MATLAB_ROW_KEY = "_matlab_row"
 MATLAB_IDENTIFIER = re.compile(r"^[A-Za-z]\w*$")
 CUSTOM_PROP_ARCH_FIELDS = (
     "Arch",
@@ -211,6 +212,16 @@ def _prepare_custom_prop_arch(propulsion):
             prop_arch[field_name],
             f"PropArch.{field_name}",
         )
+
+    for field_name in ("SrcType", "TrnType"):
+        value = prop_arch[field_name]
+        if (
+            (isinstance(value, list) or isinstance(value, tuple))
+            and all(not isinstance(item, (list, tuple)) for item in value)
+        ):
+            prop_arch[field_name] = {
+                MATLAB_ROW_KEY: list(value),
+            }
 
     segment_fields = ("OperUpsBySegment", "OperDwnBySegment")
     present_fields = [field for field in segment_fields if field in prop_arch]

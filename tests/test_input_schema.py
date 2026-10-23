@@ -402,8 +402,8 @@ def test_input_aircraft_contract_accepts_custom_prop_arch_expressions():
     )
 
 
-def test_prepare_aircraft_preserves_fixed_numeric_custom_prop_arch():
-    """Keep O architecture matrix fields for MATLAB instead of collapsing Type."""
+def test_prepare_aircraft_normalizes_custom_type_vectors_as_rows():
+    """Keep O matrices and orient component type vectors for FAST indexing."""
 
     data = read_raw_json_file(DEFAULT_INPUT_DIR / "InputAircraft.json")
     changed = deepcopy(data)
@@ -411,7 +411,16 @@ def test_prepare_aircraft_preserves_fixed_numeric_custom_prop_arch():
 
     prepared = prepare_aircraft(changed)
 
-    assert prepared["Specs"]["Propulsion"]["PropArch"] == fixed_custom_prop_arch()
+    prop_arch = prepared["Specs"]["Propulsion"]["PropArch"]
+    expected = fixed_custom_prop_arch()
+    assert prop_arch["SrcType"] == {
+        "_matlab_row": expected["SrcType"],
+    }
+    assert prop_arch["TrnType"] == {
+        "_matlab_row": expected["TrnType"],
+    }
+    for field_name in ("Type", "Arch", "OperUps", "OperDwn", "EtaUps", "EtaDwn"):
+        assert prop_arch[field_name] == expected[field_name]
 
 
 def test_prepare_aircraft_converts_custom_oper_matrices_directly():
