@@ -38,6 +38,7 @@ AERO_METHOD_EXPRESSIONS = {
 }
 GEOMETRY_PRESET_NAMES = (
     "DeltaCanard",
+    "ERJ175LR",
     "LargeTurbofan",
     "LargeTurboprop",
     "LM100JNominalGeometry",

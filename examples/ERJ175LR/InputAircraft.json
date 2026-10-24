@@ -222,6 +222,11 @@
       "Type": 1
     },
     "Plotting": 0,
+    "VisualizeAircraft": 0,
     "Table": 0
+  },
+  "Geometry": {
+    "LengthSet": 31.68,
+    "Preset": "ERJ175LR"
   }
 }

@@ -932,6 +932,7 @@
           "units": "unitless",
           "enum": [
             "DeltaCanard",
+            "ERJ175LR",
             "LargeTurbofan",
             "LargeTurboprop",
             "LM100JNominalGeometry",
