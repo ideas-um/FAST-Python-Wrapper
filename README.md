@@ -20,7 +20,7 @@ The wrapper passes aircraft data through to FAST and keeps wrapper-side rules li
 
 Custom `O` propulsion architectures support fixed numeric vectors or matrices. Mission-dependent architectures can provide paired `OperUpsBySegment` and `OperDwnBySegment` arrays, with one square matrix per mission segment. JSON inputs can also use explicit `_matlab_expression` marker objects when FAST needs a function handle.
 
-This branch targets FAST branch `triet` at revision `f9ae60d`. Set `Settings.PowerManagement.Mode` to `RecomputeLambda` for FAST-managed power splits or `SupplyLambda` to preserve supplied pointwise histories. Supplied missions use `Mission.Profile.LamDwnBySegment` and `LamUpsBySegment`, each containing one numeric matrix per mission segment; rows are segment points and columns are propulsion split variables. FAST reports finite residuals under `Mission.History.SI.Constraints`, including positive `PowerDeficit` values when a supplied split is infeasible.
+This branch targets FAST branch `triet` at revision `a11fcee`. Set `Settings.PowerManagement.Mode` to `RecomputeLambda` for FAST-managed power splits or `SupplyLambda` to preserve supplied pointwise histories. Supplied missions use `Mission.Profile.LamDwnBySegment` and `LamUpsBySegment`, each containing one numeric matrix per mission segment; rows are segment points and columns are propulsion split variables. FAST reports finite residuals under `Mission.History.SI.Constraints`, including positive `PowerDeficit` values when a supplied split is infeasible.
 
 By default, `FAST_Python_Wrapper()` returns the full FAST output after converting MATLAB values into Python data. Use `simplify_output=True` only when regenerating or comparing the repository's simplified JSON fixtures.
 
