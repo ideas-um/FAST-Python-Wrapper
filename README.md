@@ -20,7 +20,7 @@ The wrapper passes aircraft data through to FAST and keeps wrapper-side rules li
 
 Custom `O` propulsion architectures support fixed numeric vectors or matrices. Mission-dependent architectures can provide paired `OperUpsBySegment` and `OperDwnBySegment` arrays, with one square matrix per mission segment. JSON inputs can also use explicit `_matlab_expression` marker objects when FAST needs a function handle.
 
-This branch targets FAST branch `triet` at revision `a11fcee`. Set `Settings.PowerManagement.Mode` to `RecomputeLambda` for FAST-managed power splits or `SupplyLambda` to preserve supplied pointwise histories. Supplied missions use `Mission.Profile.LamDwnBySegment` and `LamUpsBySegment`, each containing one numeric matrix per mission segment; rows are segment points and columns are propulsion split variables. FAST reports finite residuals under `Mission.History.SI.Constraints`, including positive `PowerDeficit` values when a supplied split is infeasible.
+This branch targets FAST branch `triet` at revision `53e0cc0`. Set `Settings.PowerManagement.Mode` to `RecomputeLambda` for FAST-managed power splits or `SupplyLambda` to preserve supplied pointwise histories. Supplied missions use `Mission.Profile.LamDwnBySegment` and `LamUpsBySegment`, each containing one numeric matrix per mission segment; rows are segment points and columns are propulsion split variables. FAST reports finite residuals under `Mission.History.SI.Constraints`, including positive `PowerDeficit` values when a supplied split is infeasible.
 
 The captured MATLAB log ends with FAST's feasibility summary. Numerically converged runs that fail physical or mission checks retain the `FAST:InfeasibleResult` warning and its failed-check details in `result["log"]`.
 
