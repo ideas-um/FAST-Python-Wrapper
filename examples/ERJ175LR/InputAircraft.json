@@ -8,10 +8,10 @@
     "Aero": {
       "L_D": {
         "ClbCF": 1,
-        "CrsCF": 1,
+        "CrsCF": 1.002,
         "Method": "ConstantLD",
         "Clb": 10.9773,
-        "Crs": 15.2,
+        "Crs": 15.2304,
         "Des": 10.9773
       },
       "W_S": {
@@ -107,7 +107,7 @@
       "BaseArea": 0
     },
     "Propulsion": {
-      "MDotCF": 1.05,
+      "MDotCF": 1.04424,
       "PropArch": {
         "Type": "C"
       },
@@ -132,7 +132,7 @@
       ]
     },
     "Weight": {
-      "WairfCF": 1.016,
+      "WairfCF": 0.98237,
       "MTOW": 38789.858705290004,
       "EG": null,
       "EM": 0,
@@ -219,6 +219,7 @@
     },
     "Analysis": {
       "MaxIter": 30,
+      "Tol": 1e-6,
       "Type": 1
     },
     "Plotting": 0,

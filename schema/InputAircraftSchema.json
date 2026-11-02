@@ -824,6 +824,12 @@
               "units": "count",
               "minimum": 0
             },
+            "Tol": {
+              "type": "number",
+              "description": "Relative convergence tolerance for fuel, battery, and maximum takeoff weight sizing updates.",
+              "units": "unitless",
+              "exclusiveMinimum": 0
+            },
             "Type": {
               "type": "integer",
               "description": "Analysis mode flag: +1 on-design, negative values off-design.",

@@ -207,6 +207,9 @@
             "MaxIter": {
               "type": "number"
             },
+            "Tol": {
+              "type": "number"
+            },
             "Type": {
               "type": "number"
             }
@@ -214,6 +217,7 @@
           "additionalProperties": false,
           "required": [
             "MaxIter",
+            "Tol",
             "Type"
           ]
         },
