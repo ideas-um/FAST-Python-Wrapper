@@ -38,6 +38,8 @@ def FAST_Python_Wrapper(
         - log: MATLAB stdout captured during the run.
         - output: Python dictionary equivalent of FAST OutputAircraft, or an
             empty dictionary when FAST does not produce one.
+        - fast_main_attempted: True only when execution crossed the MATLAB
+            call boundary into Main.m.
         Pass simplify_output=True to remove wrapper-specific runtime fields
             used by the committed JSON fixtures.
         Pass state_output_path to preserve the native MATLAB aircraft needed
@@ -69,6 +71,7 @@ def FAST_Python_Wrapper(
                 "status": "No",
                 "log": str(error),
                 "output": {},
+                "fast_main_attempted": False,
             }
 
         try:
@@ -81,7 +84,9 @@ def FAST_Python_Wrapper(
                 fast_result = struct();
                 fast_result_json = '';
                 fast_status = 'No';
+                fast_main_attempted = 'No';
                 try
+                    fast_main_attempted = 'Yes';
                     fast_result = Main(aircraft_spec, mission_profile);
                     {state_save}
                     fast_result_json = jsonencode(fast_json_ready(fast_result));
@@ -97,6 +102,7 @@ def FAST_Python_Wrapper(
                 "status": "No",
                 "log": str(error),
                 "output": {},
+                "fast_main_attempted": _main_attempted(engine),
             }
 
         try:
@@ -104,6 +110,8 @@ def FAST_Python_Wrapper(
             fast_status = engine.workspace["fast_status"]
         except Exception:
             fast_status = "No"
+
+        main_attempted = _main_attempted(engine)
 
         try:
             # Extract OutputAircraft
@@ -128,16 +136,26 @@ def FAST_Python_Wrapper(
                 "status": "Yes",
                 "log": log,
                 "output": output,
+                "fast_main_attempted": main_attempted,
             }
         else:
             return {
                 "status": "No",
                 "log": log,
                 "output": output,
+                "fast_main_attempted": main_attempted,
             }
     finally:
         # Quit MATLAB Engine
         engine.quit()
+
+
+def _main_attempted(engine):
+    """Return durable evidence that the MATLAB script entered FAST Main.m."""
+    try:
+        return str(engine.workspace["fast_main_attempted"]) == "Yes"
+    except Exception:
+        return False
 
 
 def _aircraft_setup(aircraft_matlab, state_input_path):

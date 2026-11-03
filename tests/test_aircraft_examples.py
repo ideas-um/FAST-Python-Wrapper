@@ -47,6 +47,7 @@ def test_erj175lr_matches_published_conventional_baseline(
     result = FAST_Python_Wrapper(aircraft, mission, fast_path)
 
     assert result["status"] == "Yes", result["log"]
+    assert result["fast_main_attempted"] is True
 
     weight = result["output"]["Specs"]["Weight"]
     references = {

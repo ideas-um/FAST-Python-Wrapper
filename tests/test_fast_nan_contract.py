@@ -85,6 +85,7 @@ def test_wrapper_requires_mission_profile(monkeypatch, tmp_path):
     assert result["status"] == "No"
     assert "Mission.Profile" in result["log"]
     assert result["output"] == {}
+    assert result["fast_main_attempted"] is False
 
 
 def test_wrapper_returns_status_log_output_dict(monkeypatch, tmp_path):
@@ -94,6 +95,7 @@ def test_wrapper_returns_status_log_output_dict(monkeypatch, tmp_path):
     quit_calls = []
 
     def evalc(script, nargout=1):
+        workspace["fast_main_attempted"] = "Yes"
         workspace["fast_status"] = "Yes"
         workspace["fast_result"] = {
             "Specs": {
@@ -130,6 +132,7 @@ def test_wrapper_returns_status_log_output_dict(monkeypatch, tmp_path):
     assert result["status"] == "Yes"
     assert result["log"] == "fake log"
     assert result["output"]["Specs"]["Weight"]["MTOW"] == 123.4567
+    assert result["fast_main_attempted"] is True
     assert quit_calls
 
 
@@ -139,6 +142,7 @@ def test_wrapper_reports_no_when_output_is_missing(monkeypatch, tmp_path):
     workspace = {}
 
     def evalc(script, nargout=1):
+        workspace["fast_main_attempted"] = "Yes"
         workspace["fast_status"] = "No"
         workspace["fast_result"] = {}
         return "FAST did not converge"
@@ -164,6 +168,7 @@ def test_wrapper_reports_no_when_output_is_missing(monkeypatch, tmp_path):
         "status": "No",
         "log": "FAST did not converge",
         "output": {},
+        "fast_main_attempted": True,
     }
 
 
