@@ -21,6 +21,7 @@ import main as wrapper_module
 from main import FAST_Python_Wrapper
 from main import _aircraft_setup
 from main import _state_save
+from main import _wait_for_plots
 
 
 DEFAULT_INPUT_PATH = PROJECT_ROOT / "examples" / "ATR42" / "InputAircraft.json"
@@ -134,6 +135,37 @@ def test_wrapper_returns_status_log_output_dict(monkeypatch, tmp_path):
     assert result["output"]["Specs"]["Weight"]["MTOW"] == 123.4567
     assert result["fast_main_attempted"] is True
     assert quit_calls
+
+
+def test_plotting_waits_for_users_to_close_matlab_figures():
+    """Keep plotting-enabled figures alive before MATLAB Engine shuts down."""
+    calls = []
+
+    def eval_script(script, nargout=0):
+        calls.append((script, nargout))
+
+    engine = fake_engine(lambda script, nargout=1: "")
+    engine.eval = eval_script
+
+    _wait_for_plots(engine, {"Settings": {"Plotting": 1}})
+
+    assert len(calls) == 1
+    assert "while ~isempty(findall(groot, 'Type', 'figure'))" in calls[0][0]
+    assert "drawnow" in calls[0][0]
+    assert calls[0][1] == 0
+
+
+@pytest.mark.parametrize("plotting", [0, None])
+def test_plotting_wait_is_disabled_for_batch_runs(plotting):
+    """Leave nonplotting batch runs noninteractive."""
+
+    def fail_eval(script, nargout=0):
+        raise AssertionError("Nonplotting runs must not wait for figures")
+
+    engine = fake_engine(lambda script, nargout=1: "")
+    engine.eval = fail_eval
+
+    _wait_for_plots(engine, {"Settings": {"Plotting": plotting}})
 
 
 def test_wrapper_reports_no_when_output_is_missing(monkeypatch, tmp_path):

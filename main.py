@@ -49,7 +49,8 @@ def FAST_Python_Wrapper(
 
     Side effects:
         Starts MATLAB Engine, adds FAST to the MATLAB path, runs Main.m, and
-        quits MATLAB before returning.
+        quits MATLAB before returning. When Settings.Plotting is 1, keeps the
+        generated figures interactive until the user closes every figure.
     """
     # Start MATLAB Engine
     engine = start_matlab(resolve_fast_path(fast_path))
@@ -146,8 +147,39 @@ def FAST_Python_Wrapper(
                 "fast_main_attempted": main_attempted,
             }
     finally:
-        # Quit MATLAB Engine
-        engine.quit()
+        try:
+            _wait_for_plots(engine, input_aircraft)
+        finally:
+            # Quit MATLAB only after plotting-enabled users finish inspecting figures.
+            engine.quit()
+
+
+def _wait_for_plots(engine, input_aircraft):
+    """Keep requested FAST figures interactive until the user closes them.
+
+    Inputs:
+        engine: Running MATLAB Engine that owns the FAST figures.
+        input_aircraft: Original Python aircraft dictionary.
+
+    Side effects:
+        Blocks the wrapper only when Settings.Plotting equals 1. MATLAB events
+        continue to run, so users can inspect and close every figure normally.
+    """
+    if not isinstance(input_aircraft, dict):
+        return
+    settings = input_aircraft.get("Settings", {})
+    if not isinstance(settings, dict) or settings.get("Plotting") != 1:
+        return
+    engine.eval(
+        """
+        drawnow;
+        while ~isempty(findall(groot, 'Type', 'figure'))
+            pause(0.1);
+            drawnow;
+        end
+        """,
+        nargout=0,
+    )
 
 
 def _main_attempted(engine):

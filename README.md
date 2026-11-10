@@ -40,6 +40,10 @@ result = FAST_Python_Wrapper(input_aircraft, mission, fast_dir)
 
 `input_aircraft`, `mission`, and `result["output"]` are normal Python dictionaries. File loading is optional and belongs at the application/example boundary.
 
+When `input_aircraft["Settings"]["Plotting"]` is `1`, FAST figures remain
+interactive after sizing finishes. Close all MATLAB figure windows to let the
+wrapper quit MATLAB and return. Plotting-disabled batch runs remain unchanged.
+
 
 ## Requirements
 
